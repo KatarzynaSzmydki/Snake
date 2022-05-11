@@ -1,9 +1,11 @@
+FILE = 'highest_score.txt'
+
 
 from Snake import Snake
 from Food import Food
 import random
 from turtle import Turtle
-
+from os.path import exists
 
 class Scoreboard(Snake):
 
@@ -12,7 +14,18 @@ class Scoreboard(Snake):
         self.score = 0
         self.food = Food.find_food(self)
         self.scoreboard = Turtle()
+        self.highest_score = 0
+        self.read_highest_score()
         self.print_score()
+
+
+    def read_highest_score(self):
+        if exists(FILE):
+            f = open(FILE, 'r')
+            self.highest_score = int(f.read())
+            f.close()
+        else:
+            pass
 
 
     def count_score(self):
@@ -37,4 +50,14 @@ class Scoreboard(Snake):
         self.scoreboard.penup()
         self.scoreboard.goto(0, 270)
         self.scoreboard.pencolor("white")
-        self.scoreboard.write(f'Scoreboard: {self.score}', move=False, align='center', font=("Arial", 12, "normal"))
+        self.scoreboard.write(f'Score: {self.score} Highest Score: {self.highest_score}', move=False, align='center', font=("Arial", 12, "normal"))
+
+
+    def reset(self):
+        if self.score > self.highest_score:
+            self.highest_score = self.score
+            self.score = 0
+            f = open(FILE, 'w')
+            f.write(str(self.highest_score))
+            f.close()
+
