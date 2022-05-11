@@ -21,11 +21,9 @@ class Scoreboard(Snake):
 
     def read_highest_score(self):
         if exists(FILE):
-            f = open(FILE, 'r')
-            self.highest_score = int(f.read())
-            f.close()
-        else:
-            pass
+            with open(FILE, 'r') as f:
+                self.highest_score = int(f.read())
+
 
 
     def count_score(self):
@@ -57,7 +55,6 @@ class Scoreboard(Snake):
         if self.score > self.highest_score:
             self.highest_score = self.score
             self.score = 0
-            f = open(FILE, 'w')
-            f.write(str(self.highest_score))
-            f.close()
+            with open(FILE, 'w') as f:
+                f.write(str(self.highest_score))
 
